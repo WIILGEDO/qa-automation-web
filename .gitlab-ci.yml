@@ -1,0 +1,16 @@
+image: maven:3-jdk-8
+
+before_script:
+  - apt-get update
+  - apt-get -y install xvfb
+  - apt-get -y install firefox-esr
+  - export DISPLAY=:99.0
+  - Xvfb :99 &
+  - sleep 3
+  - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@git.fastfish.io/test-team/qa-testservices.git qa-testservices
+  - mvn clean install -Psmoke_run -f ./qa-testservices/pom.xml
+
+
+test:
+  script:
+     - mvn clean install -Psmoke_run
